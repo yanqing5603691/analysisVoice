@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/fileinput/fileinput.min.css}" href="css/fileinput/fileinput.min.css" rel="stylesheet" type="text/css"/>
+    <title>AnalysisVoice</title>
+</head>
+
+<div class="row">
+    <section>
+        <div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input id="fileUpload" name="fileUpload" class="file" type="file"
+                               data-preview-file-type="text">
+                        <div id="tip-warn" class="alert alert-warning fade in"
+                             style="margin-top:10px;display:none"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </section>
+</div>
+<script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
+<script th:src="@{/js/fileinput/fileinput.min.js}" src="../../static/js/fileinput/fileinput.min.js"></script>
+<script type="text/javascript" th:inline="JavaScript">
+
+
+            var filename = $(".file-caption-icon").val();
+            console.log(filename);
+            $("#fileUpload").fileinput({
+                uploadUrl: 'import',
+                allowedFileExtensions: ['wav'],
+                maxFileCount: 1,
+                uploadExtraData: function (previewId, index) {
+                    return{};
+                }
+            }).on('fileuploaded',function (){
+                alert("upload success");
+            }).on('fileuploaderror',function(){
+                alert("upload error");
+            });
+
+
+
+</script>
+</body>
+</html>

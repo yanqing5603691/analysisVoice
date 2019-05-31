@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.analysis_voiceMapper">
+  <resultMap id="BaseResultMap" type="com.entity.analysis_voice">
+    <id column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="number_of_syllables" jdbcType="INTEGER" property="numberOfSyllables" />
+    <result column="number_of_pauses" jdbcType="INTEGER" property="numberOfPauses" />
+    <result column="rate_of_speech" jdbcType="INTEGER" property="rateOfSpeech" />
+    <result column="articulation_rate" jdbcType="REAL" property="articulationRate" />
+    <result column="speaking_duration" jdbcType="REAL" property="speakingDuration" />
+    <result column="original_duration" jdbcType="REAL" property="originalDuration" />
+    <result column="balance" jdbcType="REAL" property="balance" />
+    <result column="f0_mean" jdbcType="REAL" property="f0Mean" />
+    <result column="f0_std" jdbcType="REAL" property="f0Std" />
+    <result column="f0_median" jdbcType="REAL" property="f0Median" />
+    <result column="f0_min" jdbcType="REAL" property="f0Min" />
+    <result column="f0_max" jdbcType="REAL" property="f0Max" />
+    <result column="f0_quantile25" jdbcType="REAL" property="f0Quantile25" />
+    <result column="f0_quan75" jdbcType="REAL" property="f0Quan75" />
+    <result column="sex_content" jdbcType="VARCHAR" property="sexContent" />
+    <result column="all_info" jdbcType="VARCHAR" property="allInfo" />
+    <result column="voice_url" jdbcType="VARCHAR" property="voiceUrl" />
+    <result column="insertTime" jdbcType="TIMESTAMP" property="inserttime" />
+    <result column="voiceName" jdbcType="VARCHAR" property="voicename" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    uuid, sex, number_of_syllables, number_of_pauses, rate_of_speech, articulation_rate, 
+    speaking_duration, original_duration, balance, f0_mean, f0_std, f0_median, f0_min, 
+    f0_max, f0_quantile25, f0_quan75, sex_content, all_info, voice_url, insertTime, voiceName
+  </sql>
+  <select id="selectByExample" parameterType="com.entity.analysis_voiceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from analysis_voice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from analysis_voice
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from analysis_voice
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.entity.analysis_voiceExample">
+    delete from analysis_voice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.entity.analysis_voice">
+    insert into analysis_voice (uuid, sex, number_of_syllables, 
+      number_of_pauses, rate_of_speech, articulation_rate, 
+      speaking_duration, original_duration, balance, 
+      f0_mean, f0_std, f0_median, f0_min, 
+      f0_max, f0_quantile25, f0_quan75, 
+      sex_content, all_info, voice_url, 
+      insertTime, voiceName)
+    values (#{uuid,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{numberOfSyllables,jdbcType=INTEGER}, 
+      #{numberOfPauses,jdbcType=INTEGER}, #{rateOfSpeech,jdbcType=INTEGER}, #{articulationRate,jdbcType=REAL}, 
+      #{speakingDuration,jdbcType=REAL}, #{originalDuration,jdbcType=REAL}, #{balance,jdbcType=REAL}, 
+      #{f0Mean,jdbcType=REAL}, #{f0Std,jdbcType=REAL}, #{f0Median,jdbcType=REAL}, #{f0Min,jdbcType=REAL}, 
+      #{f0Max,jdbcType=REAL}, #{f0Quantile25,jdbcType=REAL}, #{f0Quan75,jdbcType=REAL}, 
+      #{sexContent,jdbcType=VARCHAR}, #{allInfo,jdbcType=VARCHAR}, #{voiceUrl,jdbcType=VARCHAR}, 
+      #{inserttime,jdbcType=TIMESTAMP}, #{voicename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.analysis_voice">
+    insert into analysis_voice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        uuid,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="numberOfSyllables != null">
+        number_of_syllables,
+      </if>
+      <if test="numberOfPauses != null">
+        number_of_pauses,
+      </if>
+      <if test="rateOfSpeech != null">
+        rate_of_speech,
+      </if>
+      <if test="articulationRate != null">
+        articulation_rate,
+      </if>
+      <if test="speakingDuration != null">
+        speaking_duration,
+      </if>
+      <if test="originalDuration != null">
+        original_duration,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="f0Mean != null">
+        f0_mean,
+      </if>
+      <if test="f0Std != null">
+        f0_std,
+      </if>
+      <if test="f0Median != null">
+        f0_median,
+      </if>
+      <if test="f0Min != null">
+        f0_min,
+      </if>
+      <if test="f0Max != null">
+        f0_max,
+      </if>
+      <if test="f0Quantile25 != null">
+        f0_quantile25,
+      </if>
+      <if test="f0Quan75 != null">
+        f0_quan75,
+      </if>
+      <if test="sexContent != null">
+        sex_content,
+      </if>
+      <if test="allInfo != null">
+        all_info,
+      </if>
+      <if test="voiceUrl != null">
+        voice_url,
+      </if>
+      <if test="inserttime != null">
+        insertTime,
+      </if>
+      <if test="voicename != null">
+        voiceName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="numberOfSyllables != null">
+        #{numberOfSyllables,jdbcType=INTEGER},
+      </if>
+      <if test="numberOfPauses != null">
+        #{numberOfPauses,jdbcType=INTEGER},
+      </if>
+      <if test="rateOfSpeech != null">
+        #{rateOfSpeech,jdbcType=INTEGER},
+      </if>
+      <if test="articulationRate != null">
+        #{articulationRate,jdbcType=REAL},
+      </if>
+      <if test="speakingDuration != null">
+        #{speakingDuration,jdbcType=REAL},
+      </if>
+      <if test="originalDuration != null">
+        #{originalDuration,jdbcType=REAL},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=REAL},
+      </if>
+      <if test="f0Mean != null">
+        #{f0Mean,jdbcType=REAL},
+      </if>
+      <if test="f0Std != null">
+        #{f0Std,jdbcType=REAL},
+      </if>
+      <if test="f0Median != null">
+        #{f0Median,jdbcType=REAL},
+      </if>
+      <if test="f0Min != null">
+        #{f0Min,jdbcType=REAL},
+      </if>
+      <if test="f0Max != null">
+        #{f0Max,jdbcType=REAL},
+      </if>
+      <if test="f0Quantile25 != null">
+        #{f0Quantile25,jdbcType=REAL},
+      </if>
+      <if test="f0Quan75 != null">
+        #{f0Quan75,jdbcType=REAL},
+      </if>
+      <if test="sexContent != null">
+        #{sexContent,jdbcType=VARCHAR},
+      </if>
+      <if test="allInfo != null">
+        #{allInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="voiceUrl != null">
+        #{voiceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="voicename != null">
+        #{voicename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.entity.analysis_voiceExample" resultType="java.lang.Long">
+    select count(*) from analysis_voice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update analysis_voice
+    <set>
+      <if test="record.uuid != null">
+        uuid = #{record.uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.numberOfSyllables != null">
+        number_of_syllables = #{record.numberOfSyllables,jdbcType=INTEGER},
+      </if>
+      <if test="record.numberOfPauses != null">
+        number_of_pauses = #{record.numberOfPauses,jdbcType=INTEGER},
+      </if>
+      <if test="record.rateOfSpeech != null">
+        rate_of_speech = #{record.rateOfSpeech,jdbcType=INTEGER},
+      </if>
+      <if test="record.articulationRate != null">
+        articulation_rate = #{record.articulationRate,jdbcType=REAL},
+      </if>
+      <if test="record.speakingDuration != null">
+        speaking_duration = #{record.speakingDuration,jdbcType=REAL},
+      </if>
+      <if test="record.originalDuration != null">
+        original_duration = #{record.originalDuration,jdbcType=REAL},
+      </if>
+      <if test="record.balance != null">
+        balance = #{record.balance,jdbcType=REAL},
+      </if>
+      <if test="record.f0Mean != null">
+        f0_mean = #{record.f0Mean,jdbcType=REAL},
+      </if>
+      <if test="record.f0Std != null">
+        f0_std = #{record.f0Std,jdbcType=REAL},
+      </if>
+      <if test="record.f0Median != null">
+        f0_median = #{record.f0Median,jdbcType=REAL},
+      </if>
+      <if test="record.f0Min != null">
+        f0_min = #{record.f0Min,jdbcType=REAL},
+      </if>
+      <if test="record.f0Max != null">
+        f0_max = #{record.f0Max,jdbcType=REAL},
+      </if>
+      <if test="record.f0Quantile25 != null">
+        f0_quantile25 = #{record.f0Quantile25,jdbcType=REAL},
+      </if>
+      <if test="record.f0Quan75 != null">
+        f0_quan75 = #{record.f0Quan75,jdbcType=REAL},
+      </if>
+      <if test="record.sexContent != null">
+        sex_content = #{record.sexContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allInfo != null">
+        all_info = #{record.allInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.voiceUrl != null">
+        voice_url = #{record.voiceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inserttime != null">
+        insertTime = #{record.inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.voicename != null">
+        voiceName = #{record.voicename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update analysis_voice
+    set uuid = #{record.uuid,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      number_of_syllables = #{record.numberOfSyllables,jdbcType=INTEGER},
+      number_of_pauses = #{record.numberOfPauses,jdbcType=INTEGER},
+      rate_of_speech = #{record.rateOfSpeech,jdbcType=INTEGER},
+      articulation_rate = #{record.articulationRate,jdbcType=REAL},
+      speaking_duration = #{record.speakingDuration,jdbcType=REAL},
+      original_duration = #{record.originalDuration,jdbcType=REAL},
+      balance = #{record.balance,jdbcType=REAL},
+      f0_mean = #{record.f0Mean,jdbcType=REAL},
+      f0_std = #{record.f0Std,jdbcType=REAL},
+      f0_median = #{record.f0Median,jdbcType=REAL},
+      f0_min = #{record.f0Min,jdbcType=REAL},
+      f0_max = #{record.f0Max,jdbcType=REAL},
+      f0_quantile25 = #{record.f0Quantile25,jdbcType=REAL},
+      f0_quan75 = #{record.f0Quan75,jdbcType=REAL},
+      sex_content = #{record.sexContent,jdbcType=VARCHAR},
+      all_info = #{record.allInfo,jdbcType=VARCHAR},
+      voice_url = #{record.voiceUrl,jdbcType=VARCHAR},
+      insertTime = #{record.inserttime,jdbcType=TIMESTAMP},
+      voiceName = #{record.voicename,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.entity.analysis_voice">
+    update analysis_voice
+    <set>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="numberOfSyllables != null">
+        number_of_syllables = #{numberOfSyllables,jdbcType=INTEGER},
+      </if>
+      <if test="numberOfPauses != null">
+        number_of_pauses = #{numberOfPauses,jdbcType=INTEGER},
+      </if>
+      <if test="rateOfSpeech != null">
+        rate_of_speech = #{rateOfSpeech,jdbcType=INTEGER},
+      </if>
+      <if test="articulationRate != null">
+        articulation_rate = #{articulationRate,jdbcType=REAL},
+      </if>
+      <if test="speakingDuration != null">
+        speaking_duration = #{speakingDuration,jdbcType=REAL},
+      </if>
+      <if test="originalDuration != null">
+        original_duration = #{originalDuration,jdbcType=REAL},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=REAL},
+      </if>
+      <if test="f0Mean != null">
+        f0_mean = #{f0Mean,jdbcType=REAL},
+      </if>
+      <if test="f0Std != null">
+        f0_std = #{f0Std,jdbcType=REAL},
+      </if>
+      <if test="f0Median != null">
+        f0_median = #{f0Median,jdbcType=REAL},
+      </if>
+      <if test="f0Min != null">
+        f0_min = #{f0Min,jdbcType=REAL},
+      </if>
+      <if test="f0Max != null">
+        f0_max = #{f0Max,jdbcType=REAL},
+      </if>
+      <if test="f0Quantile25 != null">
+        f0_quantile25 = #{f0Quantile25,jdbcType=REAL},
+      </if>
+      <if test="f0Quan75 != null">
+        f0_quan75 = #{f0Quan75,jdbcType=REAL},
+      </if>
+      <if test="sexContent != null">
+        sex_content = #{sexContent,jdbcType=VARCHAR},
+      </if>
+      <if test="allInfo != null">
+        all_info = #{allInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="voiceUrl != null">
+        voice_url = #{voiceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="inserttime != null">
+        insertTime = #{inserttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="voicename != null">
+        voiceName = #{voicename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.entity.analysis_voice">
+    update analysis_voice
+    set sex = #{sex,jdbcType=VARCHAR},
+      number_of_syllables = #{numberOfSyllables,jdbcType=INTEGER},
+      number_of_pauses = #{numberOfPauses,jdbcType=INTEGER},
+      rate_of_speech = #{rateOfSpeech,jdbcType=INTEGER},
+      articulation_rate = #{articulationRate,jdbcType=REAL},
+      speaking_duration = #{speakingDuration,jdbcType=REAL},
+      original_duration = #{originalDuration,jdbcType=REAL},
+      balance = #{balance,jdbcType=REAL},
+      f0_mean = #{f0Mean,jdbcType=REAL},
+      f0_std = #{f0Std,jdbcType=REAL},
+      f0_median = #{f0Median,jdbcType=REAL},
+      f0_min = #{f0Min,jdbcType=REAL},
+      f0_max = #{f0Max,jdbcType=REAL},
+      f0_quantile25 = #{f0Quantile25,jdbcType=REAL},
+      f0_quan75 = #{f0Quan75,jdbcType=REAL},
+      sex_content = #{sexContent,jdbcType=VARCHAR},
+      all_info = #{allInfo,jdbcType=VARCHAR},
+      voice_url = #{voiceUrl,jdbcType=VARCHAR},
+      insertTime = #{inserttime,jdbcType=TIMESTAMP},
+      voiceName = #{voicename,jdbcType=VARCHAR}
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

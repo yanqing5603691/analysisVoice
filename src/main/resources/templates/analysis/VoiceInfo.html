@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../css/style.css" />
+    <link rel="stylesheet" th:href="@{/css/ribbon.css}" href="../css/ribbon.css" />
+    <link th:href="@{/css/bootstrap.min.css}" href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/fileinput/fileinput.min.css}" href="css/fileinput/fileinput.min.css" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/bootstrap-table.min.css}" href="../../static/css/bootstrap-table.min.css" rel="stylesheet"
+          type="text/css">
+    <title>AnalysisVoiceInfo</title>
+</head>
+<body>
+<!--音频播放器-->
+<div id="waveContent" class="waveContent col-md-12 col-lg-12 ">
+
+    <div id="wave-timeline"></div>
+    <div id="waveform">
+        <!-- Here be waveform -->
+    </div>
+    <div id="wave-trueTimeline"></div>
+
+    <div class="" style="text-align:center;">
+        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+
+            <button class="btn btn-default" data-action="play"
+                    title="Play/Pause">
+                <i class="glyphicon glyphicon-play"></i>
+                /
+                <i class="glyphicon glyphicon-pause"></i>
+            </button>
+
+            <button class="btn btn-default" data-action="fast-backward"
+                    title="Slower Play"
+                    data-placement="top">
+                <i class="glyphicon glyphicon-backward"></i>
+            </button>
+
+            <button class="btn btn-default" data-action="fast-forward"
+                    title="Faster Play"
+                    data-placement="top">
+                <i class="glyphicon glyphicon-forward"></i>
+            </button>
+
+            <button class="btn btn-default" data-action="back"
+                    title="Backward Play">
+                <i class="glyphicon glyphicon-step-backward"></i>
+            </button>
+
+            <button class="btn btn-default" data-action="forth"
+                    title="Forth Play">
+                <i class="glyphicon glyphicon-step-forward"></i>
+            </button>
+
+        </div>
+        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+            <button class="btn btn-default" data-action="toggle-mute"
+                    title="Mute">
+                <i class="glyphicon glyphicon-volume-off"></i>
+            </button>
+            <button class="btn btn-default" data-action="volume-down"
+                    title="Volume Down"
+                    data-placement="top">
+                <i class="glyphicon glyphicon-volume-down"></i>
+            </button>
+            <button class="btn btn-default" data-action="volume-up"
+                    title="Volume Up"
+                    data-placement="top">
+                <i class="glyphicon glyphicon-volume-up"></i>
+            </button>
+
+
+        </div>
+
+        <!--<div id="channelCtl" class="btn-group btn-group-xs" role="group" aria-label="...">
+            <button class="btn btn-default" data-action="channel-l-ch"
+                    title="L-CH" >
+                <i class="glyphicon glyphicon-triangle-left"></i>
+            </button>
+            <button class="btn btn-default" data-action="channel-r-ch"
+                    title="R-CH" >
+                <i class="glyphicon glyphicon-triangle-right"></i>
+            </button>
+            <button class="btn btn-default" data-action="channel-s-ch"
+                    title="Stereo">
+                <i class="glyphicon glyphicon-sound-stereo"></i>
+            </button>
+        </div>-->
+
+
+        <!--<div id="video" class="btn-group btn-group-xs" role="group" aria-label="...">-->
+        <!--<button class="btn btn-default" data-action="showVideo"-->
+        <!--title="Video">-->
+        <!--<i class="glyphicon glyphicon-film"></i>-->
+        <!--</button>-->
+
+        <!--</div>-->
+
+        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+            <button  class="btn btn-default"
+                     title="toggle tags" onclick="toggleTag()">
+                <i class="glyphicon glyphicon-tag"></i>
+            </button>
+        </div>
+
+        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+            <button class="btn btn-default" data-action="hide-player"
+                    title="Stop and Hide Player">
+                <i class="glyphicon glyphicon-chevron-up"></i>
+            </button>
+        </div>
+
+    </div>
+
+
+</div>
+<!--音频播放器结束-->
+
+<div>
+   <!--<div id="voice_div" > <audio src="" id="voice_audio" controls="controls"></audio> </div>-->
+   <!-- <a id="voice_a" href="">点击跳转播放</a>-->
+    <div id="toolbar" style="padding-top: 10px;">
+        <button id="to_upload" class="btn btn-default">
+            <i class="glyphicon glyphicon-plus" >ToUpload</i>
+        </button>
+        <!--<button id="test_toastr" class="btn btn-default">
+            <i class="glyphicon glyphicon-plus" th:text="#{Add}">通知</i>
+        </button>-->
+    </div>
+    <table id="table"
+           data-toggle="table"
+           data-toolbar="#toolbar"
+           th:data-url="info"
+           data-show-refresh="true"
+           data-search="true"
+           data-pagination="true"
+           data-side-pagination="client"
+           data-page-list="[10,20, 50, 100, 200]"
+           data-method="get"
+           class="table table-striped">
+
+        <thead>
+        <tr>
+            <!--<th data-field="uuid" data-sortable="true" th:visible="false"   >uuid</th>-->
+            <th data-field="voicename" data-sortable="true">文件名</th>
+            <th data-field="inserttime" data-sortable="true" data-formatter="timeStampFormatter">创建时间</th>
+            <!--<th data-field="inserttime" data-sortable="true" >创建时间</th>-->
+            <th data-field="sex" data-sortable="true">sex</th>
+            <th data-field="numberOfSyllables" data-sortable="true">音节数</th>
+            <!--<th data-field="tenancyName" th:text="#{Tenancy.Name}">TenancyName</th>-->
+            <th data-field="numberOfPauses" data-sortable="true">暂停次数</th>
+            <th data-field="rateOfSpeech" data-sortable="true">言语速度</th>
+            <th data-field="articulationRate" data-sortable="true">清晰度</th>
+            <th data-field="speakingDuration" data-sortable="true">讲话持续时间</th>
+            <th data-field="originalDuration" data-sortable="true">原始持续时间</th>
+            <th data-field="balance" data-sortable="true">balance</th>
+            <th data-field="f0Mean" data-sortable="true">f0Mean</th>
+            <th data-field="f0Std" data-sortable="true">f0Std</th>
+            <th data-field="f0Median" data-sortable="true">f0Median</th>
+            <th data-field="f0Min" data-sortable="true">f0Min</th>
+            <th data-field="f0Max" data-sortable="true">f0Max</th>
+            <th data-field="f0Quantile25" data-sortable="true">f0Quantile25</th>
+            <th data-field="f0Quan75" data-sortable="true">f0Quan75</th>
+            <th data-field="sexContent" >sexContent</th>
+            <th data-field="allInfo" >allInfo</th>
+            <th data-field="voiceUrl" data-formatter="operateFormatter"
+                data-events="operateEvents" >voiceUrl</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+
+
+<script th:src="@{/js/jquery.min.js}" src="../../static/js/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}" src="../../static/js/bootstrap.min.js?v=3.3.6"></script>
+<script th:src="@{/js/fileinput/fileinput.min.js}" src="../../static/js/fileinput/fileinput.min.js"></script>
+<script th:src="@{/js/bootstrap-table/bootstrap-table.min.js}"
+        src="../../static/js/bootstrap-table/bootstrap-table.min.js"></script>
+<script th:src="@{/js/bootstrap-table/bootstrap-table-mobile.min.js}"
+        src="../../static/js/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script th:src="@{/js/moment.min.js}" src="../../static/js/moment.min.js"></script>
+<script  type="text/javascript" th:inline="JavaScript">
+    var  staticPath = "../../media/D0000320181226104725.stereo.wav";
+    var  thisUUID;
+
+
+
+    $("#to_upload").click(function () {
+        window.open("./uploadVoice")
+    });
+
+    function timeStampFormatter(value, row, index) {
+        if (row.inserttime != null) {
+            return parseTime(row.inserttime);
+        }
+        return null;
+    }
+
+    function parseZero(data) {
+        if (data < 10) {
+            return "0" + data;
+        } else {
+            return data;
+        }
+    }
+
+    function parseTime(time) {//return yyyy/mm/dd hh:mm:ss
+        var time = new Date(time);
+        var date = time.getFullYear() + "-" + parseZero(time.getMonth() + 1) + "-" + parseZero(time.getDate()) + " " + parseZero(time.getHours()) + ":" + parseZero(time.getMinutes()) + ":" + parseZero(time.getSeconds())
+        return date;
+    }
+
+    function operateFormatter(value, row, index) {
+        //if (row.loginid == 'administrator') {
+        return [
+            '<a class="play" href="javascript:void(0)"    >'+"点击播放",
+            '</a> ',]
+            /*'<audio  src="../../voice/D0000320181226111300.stereo.wav"  controls="controls">',
+            '</audio> ',]*/
+            .join('');
+    }
+
+    var ajaxMethod =function () {
+        var ajaxUUID = thisUUID;
+        $.ajax({
+            url: './play',
+            type: 'POST',
+            dataType: 'text',
+            data: {
+                'uuid': ajaxUUID
+            },
+            traditional: true,
+            success: function (data) {
+                console.log(data)
+                var path = data;
+                staticPath = path;
+                //$("#voice_audio").attr('src',staticPath);
+                loadPlayer();
+                //$("#voice_audio").attr('src',path);
+                //$("#voice_div").css('display',"");
+                //$("#voice_a").attr('href',path);
+                //var voice_audio = $("#voice_audio").get('0');
+                //voice_audio.load();
+                //setTimeout(voice_audio.load(),2000);
+            },
+            error: function (arg1) {
+                console.log(arg1);
+                console.log("请检查文件路径下是否存在文件!")
+            }
+        })
+    }
+    
+    var setTimeOut = function () {
+        setTimeout(function(){
+            $("#voice_audio").attr('src',staticPath)},5000
+        );
+    }
+
+    window.operateEvents = {
+        'click .play': function (e, value, row, index) {
+            //$("#voice_audio").attr('src',"");
+            thisUUID=row.uuid;
+            ajaxMethod();
+            //loadPlayer();
+            //loadPlayer();
+            //setTimeOut();
+            //$("#voice_audio").attr('src',staticPath);
+            //$("#voice_div").css('display',"");
+        },
+    }
+
+    var loadPlayer;
+    'use strict';
+    // Create an instance
+    var wavesurfer;
+
+    // Init & load audio file
+    document.addEventListener('DOMContentLoaded',function() {
+        // Init
+        wavesurfer = WaveSurfer.create({
+            container: document.querySelector('#waveform'),
+            waveColor: '#A8DBA8',
+            progressColor: '#3B8686',
+            backend: 'MediaElement',
+            mediaControls: false
+        });
+
+        wavesurfer.once('ready', function() {
+            console.log('Using wavesurfer.js ' + WaveSurfer.VERSION);
+        });
+
+        // Load audio from URL
+        //debugger;
+        loadPlayer = function(){
+            wavesurfer.load(staticPath)};
+        loadPlayer();
+
+        // toggle play button
+        document
+            .querySelector('[data-action="play"]')
+            .addEventListener('click', wavesurfer.playPause.bind(wavesurfer));
+
+    });
+</script>
+
+<!-- wavesurfer.js -->
+<script th:src="@{/js/wavesurfer/wavesurfer2.js}" src="js/wavesurfer/wavesurfer2.js"></script>
+<script th:src="@{/js/wavesurfer/plugin/timelime.js}"
+        src="../../static/js/wavesurfer/plugin/timelime.js"></script>
+<script th:src="@{/js/wavesurfer/plugin/timelime1.js}"
+        src="../../static/js/wavesurfer/plugin/timelime1.js"></script>
+<script th:src="@{/js/wavesurfer/wavesurfer.tag.js}"
+        src="js/wavesurfer/wavesurfer.tag.js"></script>
+<!--<script th:src="@{/js/dist/callMain.js}" src="js/dist/callMain.js"></script>-->
+<!--<script>
+    'use strict';
+
+    // Create an instance
+    var wavesurfer;
+
+    // Init & load audio file
+    document.addEventListener('DOMContentLoaded', function() {
+        // Init
+        wavesurfer = WaveSurfer.create({
+            container: document.querySelector('#waveform'),
+            waveColor: '#A8DBA8',
+            progressColor: '#3B8686',
+            backend: 'MediaElement',
+            mediaControls: false
+        });
+
+        wavesurfer.once('ready', function() {
+            console.log('Using wavesurfer.js ' + WaveSurfer.VERSION);
+        });
+
+        // Load audio from URL
+        wavesurfer.load('../media/D0000320181226104725.stereo.wav');
+
+        // toggle play button
+        document
+            .querySelector('[data-action="play"]')
+            .addEventListener('click', wavesurfer.playPause.bind(wavesurfer));
+
+    });
+
+</script>-->
+</body>
+</html>
