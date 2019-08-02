@@ -11,7 +11,7 @@ public class analysis_voice {
 
     private Integer numberOfPauses;
 
-    private Integer rateOfSpeech;
+    private Float rateOfSpeech;
 
     private Float articulationRate;
 
@@ -77,11 +77,11 @@ public class analysis_voice {
         this.numberOfPauses = numberOfPauses;
     }
 
-    public Integer getRateOfSpeech() {
+    public Float getRateOfSpeech() {
         return rateOfSpeech;
     }
 
-    public void setRateOfSpeech(Integer rateOfSpeech) {
+    public void setRateOfSpeech(Float rateOfSpeech) {
         this.rateOfSpeech = rateOfSpeech;
     }
 

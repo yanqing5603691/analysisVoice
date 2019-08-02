@@ -6,7 +6,7 @@
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="number_of_syllables" jdbcType="INTEGER" property="numberOfSyllables" />
     <result column="number_of_pauses" jdbcType="INTEGER" property="numberOfPauses" />
-    <result column="rate_of_speech" jdbcType="INTEGER" property="rateOfSpeech" />
+    <result column="rate_of_speech" jdbcType="REAL" property="rateOfSpeech" />
     <result column="articulation_rate" jdbcType="REAL" property="articulationRate" />
     <result column="speaking_duration" jdbcType="REAL" property="speakingDuration" />
     <result column="original_duration" jdbcType="REAL" property="originalDuration" />
@@ -126,7 +126,7 @@
       sex_content, all_info, voice_url, 
       insertTime, voiceName)
     values (#{uuid,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{numberOfSyllables,jdbcType=INTEGER}, 
-      #{numberOfPauses,jdbcType=INTEGER}, #{rateOfSpeech,jdbcType=INTEGER}, #{articulationRate,jdbcType=REAL}, 
+      #{numberOfPauses,jdbcType=INTEGER}, #{rateOfSpeech,jdbcType=REAL}, #{articulationRate,jdbcType=REAL}, 
       #{speakingDuration,jdbcType=REAL}, #{originalDuration,jdbcType=REAL}, #{balance,jdbcType=REAL}, 
       #{f0Mean,jdbcType=REAL}, #{f0Std,jdbcType=REAL}, #{f0Median,jdbcType=REAL}, #{f0Min,jdbcType=REAL}, 
       #{f0Max,jdbcType=REAL}, #{f0Quantile25,jdbcType=REAL}, #{f0Quan75,jdbcType=REAL}, 
@@ -214,7 +214,7 @@
         #{numberOfPauses,jdbcType=INTEGER},
       </if>
       <if test="rateOfSpeech != null">
-        #{rateOfSpeech,jdbcType=INTEGER},
+        #{rateOfSpeech,jdbcType=REAL},
       </if>
       <if test="articulationRate != null">
         #{articulationRate,jdbcType=REAL},
@@ -288,7 +288,7 @@
         number_of_pauses = #{record.numberOfPauses,jdbcType=INTEGER},
       </if>
       <if test="record.rateOfSpeech != null">
-        rate_of_speech = #{record.rateOfSpeech,jdbcType=INTEGER},
+        rate_of_speech = #{record.rateOfSpeech,jdbcType=REAL},
       </if>
       <if test="record.articulationRate != null">
         articulation_rate = #{record.articulationRate,jdbcType=REAL},
@@ -349,7 +349,7 @@
       sex = #{record.sex,jdbcType=VARCHAR},
       number_of_syllables = #{record.numberOfSyllables,jdbcType=INTEGER},
       number_of_pauses = #{record.numberOfPauses,jdbcType=INTEGER},
-      rate_of_speech = #{record.rateOfSpeech,jdbcType=INTEGER},
+      rate_of_speech = #{record.rateOfSpeech,jdbcType=REAL},
       articulation_rate = #{record.articulationRate,jdbcType=REAL},
       speaking_duration = #{record.speakingDuration,jdbcType=REAL},
       original_duration = #{record.originalDuration,jdbcType=REAL},
@@ -383,7 +383,7 @@
         number_of_pauses = #{numberOfPauses,jdbcType=INTEGER},
       </if>
       <if test="rateOfSpeech != null">
-        rate_of_speech = #{rateOfSpeech,jdbcType=INTEGER},
+        rate_of_speech = #{rateOfSpeech,jdbcType=REAL},
       </if>
       <if test="articulationRate != null">
         articulation_rate = #{articulationRate,jdbcType=REAL},
@@ -441,7 +441,7 @@
     set sex = #{sex,jdbcType=VARCHAR},
       number_of_syllables = #{numberOfSyllables,jdbcType=INTEGER},
       number_of_pauses = #{numberOfPauses,jdbcType=INTEGER},
-      rate_of_speech = #{rateOfSpeech,jdbcType=INTEGER},
+      rate_of_speech = #{rateOfSpeech,jdbcType=REAL},
       articulation_rate = #{articulationRate,jdbcType=REAL},
       speaking_duration = #{speakingDuration,jdbcType=REAL},
       original_duration = #{originalDuration,jdbcType=REAL},

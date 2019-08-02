@@ -5,11 +5,11 @@ import com.entity.analysis_voice;
 import com.entity.analysis_voiceExample;
 import com.service.AnalysisVoice;
 import com.util.InvokeBat;
-import javafx.application.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.*;
@@ -19,13 +19,14 @@ import java.util.*;
  */
 @Service
 public class AnalysisVoiceImpl implements AnalysisVoice {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisVoiceImpl.class);
     @Autowired
     analysis_voiceMapper analysis_voiceMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addAnalysisRecord(analysis_voice record) {
-        File file = new File("E:\\my_voice\\fileUpload");
+        File file = new File("D:\\my_voice\\fileUpload");
         String dirPath = file.getAbsolutePath();
         File[] files = file.listFiles();
         //int index = 0;
@@ -55,18 +56,19 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
                         record.setVoicename(filename);
                         record.setInserttime(new Date());
                         analysis_voiceMapper.insert(record);
-                        System.out.println("Insert record successful "+new Date());
+                        LOGGER.info("Insert record successful "+new Date());
                         br.close();
+                        isr.close();
                         InvokeBat.deleteFile(fileTxtName);
                         //InvokeBat.deleteFile(fileTextGridName);
                         if(copyFile(fileWavName,newPath)==true){
                             InvokeBat.deleteFile(fileWavName);
                         }
                     } else {
-                        System.out.println(fileTxtName+"文件不存在!"+new Date());
+                        LOGGER.debug(fileTxtName+"文件不存在!"+new Date());
                     }
                 } catch (Exception e) {
-                    System.out.println("文件读取错误"+new Date());
+                    LOGGER.error("文件读取错误"+new Date());
                 }
             }
         }
@@ -84,7 +86,7 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
             //String[] ccc = aaa.split("   ");
             record.setNumberOfSyllables(Integer.valueOf(hashMap.get(2).split("   ")[hashMap.get(2).split("   ").length - 1].trim()));
             record.setNumberOfPauses(Integer.valueOf(hashMap.get(3).split("   ")[hashMap.get(3).split("   ").length - 1].trim()));
-            record.setRateOfSpeech(Integer.valueOf(hashMap.get(4).split("   ")[hashMap.get(4).split("   ").length - 1].trim()));
+            record.setRateOfSpeech(Float.valueOf(hashMap.get(4).split("   ")[hashMap.get(4).split("   ").length - 1].trim()));
             record.setArticulationRate(Float.valueOf(hashMap.get(5).split("   ")[hashMap.get(5).split("   ").length - 1].trim()));
             record.setSpeakingDuration(Float.valueOf(hashMap.get(6).split("   ")[hashMap.get(6).split("   ").length - 1].trim()));
             record.setOriginalDuration(Float.valueOf(hashMap.get(7).split("   ")[hashMap.get(7).split("   ").length - 1].trim()));
@@ -98,7 +100,7 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
             record.setF0Quan75(Float.valueOf(hashMap.get(15).split("   ")[hashMap.get(15).split("   ").length - 1].trim()));
             if (hashMap.get(17).contains("female")) {
                 record.setSex("female");
-            } else if (hashMap.get(17).contains("male")) {
+            } else if (hashMap.get(17).contains("ale")) {
                 record.setSex("male");
             } else {
                 record.setSex("indeterminacy");
@@ -127,11 +129,12 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
                     fs.write(buffer, 0, byteread);
                 }
                 inStream.close();
+                fs.close();
             }
             return true;
         }
         catch (Exception e) {
-            System.out.println(newPath+"复制单个文件操作出错"+new Date());
+            LOGGER.error(newPath+"复制单个文件操作出错"+new Date());
             e.printStackTrace();
             return false;
         }
@@ -157,8 +160,8 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
         String voicePath = session.getServletContext().getRealPath("/") ;
         String pathName = voicePath+"voice/"+wavName;
         String wavPath = "././"+"voice/"+wavName;
-        System.out.println(wavPath);
-        System.out.println(pathName);
+        //System.out.println(wavPath);
+        //System.out.println(pathName);
         File fileP = new File(pathName);
         if (!fileP.getParentFile().exists()){
             fileP.getParentFile().mkdirs();
@@ -169,15 +172,22 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
-            System.out.println("copyFile successful "+new Date());
+            LOGGER.info("copyFile successful "+new Date());
         }else {
-            System.out.println("copyFile failed  "+new Date());
+            LOGGER.info("copyFile failed  "+new Date());
         }
         return wavPath;
     }
 
-    public void deleteWav(HttpSession session){
-        String path = session.getServletContext().getRealPath("voice/")+"/voice";
+    public void deleteWav()  {
+        //HttpServletRequest request =
+        /*String path = request.getSession().getServletContext().getRealPath("voice/");*/
+        File directory = new File("");// 参数为空
+        String courseFile = null;
+        try {
+            courseFile = directory.getCanonicalPath();
+        System.out.println(courseFile);
+        String path = courseFile+"/voice";
         File file = new File(path);
         String dirPath = file.getAbsolutePath();
         File[] files = file.listFiles();
@@ -188,6 +198,9 @@ public class AnalysisVoiceImpl implements AnalysisVoice {
                 InvokeBat.deleteFile(filePath);
                 System.out.println("StaticScheduleTask Delete "+filePath+" Successful"+new Date());
             }
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -2,17 +2,20 @@ package com.util;
 
 import com.entity.analysis_voice;
 import com.service.impl.AnalysisVoiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 
 /**
@@ -22,10 +25,11 @@ import java.util.Date;
 @Configuration
 @EnableScheduling
 public class StaticScheduleTask {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StaticScheduleTask.class);
     @Autowired
     AnalysisVoiceImpl analysisVoice;
     @Autowired
-    HttpSession session;
+    HttpServletRequest request;
     @Async
     @Scheduled(cron = "0/10 * * * * ?")
     private void getFileNameTasks() throws IOException {
@@ -38,7 +42,7 @@ public class StaticScheduleTask {
     private void startExeTasks() throws IOException {
         InvokeBat invokeBat = new InvokeBat();
         invokeBat.runBat("startAnalysisVoiceExe.bat");
-        File file = new File("E:\\my_voice\\fileUpload");
+        File file = new File("D:\\my_voice\\fileUpload");
         String dirPath = file.getAbsolutePath();
         File[] files = file.listFiles();
         //int index = 0;
@@ -46,7 +50,7 @@ public class StaticScheduleTask {
             if (fileTxt.toString().contains(".TextGrid")){
                 String filePath = fileTxt.getPath();
                 InvokeBat.deleteFile(filePath);
-                System.out.println("Delete "+filePath+" Successful"+new Date());
+                LOGGER.info("Delete "+filePath+" Successful"+new Date());
             }
         }
     }
@@ -59,8 +63,64 @@ public class StaticScheduleTask {
     }
 
     @Async
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 1 0 * * ?")
     private void deleteWav(){
-        analysisVoice.deleteWav(session);
+        //analysisVoice.deleteWav();
+        try {
+            String path=File.createTempFile("datas", ".txt").getPath();		//获取临时文件路径
+            File file=new File(path).getParentFile();		//获取临时文件存放的文件夹
+            File[] files=file.listFiles();				//取文件夹下所有文件
+            	File f = files[0]; 				//遍历删除所有文件
+                //String aPath = f.getAbsolutePath();
+                String voicePath = f.getParentFile().getParent()+"\\webapps\\demo\\voice";
+                File newFile = new File(voicePath);
+            File[] filelist = newFile.listFiles();
+            //int index = 0;
+            for (File fileTxt : filelist) {
+                if (fileTxt.toString().contains(".wav")) {
+                    if(fileTxt.delete()){
+                        LOGGER.info("文件删除成功");
+                    }else{
+                        LOGGER.info("找到文件了，但是删除失败");
+                    }
+                }
+            }
+                //delete(newFile);
+                //System.out.println(voicePath);
+                //System.out.println("当前时间是"+new Date().toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+    private void delete(File file){
+        System.out.println("进来了删除文件操作"+file);
+        /*if (file.isDirectory()) {
+            String[] children = file.list();
+            for (int i=0; i<children.length; i++) {     //递归删除目录中的子目录下
+                delete(new File(file, children[i]));
+            }
+        }*/
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            if (inputStream != null) {
+                // 关闭流
+                inputStream.close();
+            }
+            // 目录此时为空，可以删除
+            file.delete();
+            if (!file.exists()){
+                System.out.println(file+"删除文件成功");
+            }
+        } catch (Exception e) {
+            System.out.println(file+"删除文件失败");
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 }

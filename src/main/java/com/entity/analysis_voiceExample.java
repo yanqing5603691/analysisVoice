@@ -375,52 +375,52 @@ public class analysis_voiceExample {
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechEqualTo(Integer value) {
+        public Criteria andRateOfSpeechEqualTo(Float value) {
             addCriterion("rate_of_speech =", value, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechNotEqualTo(Integer value) {
+        public Criteria andRateOfSpeechNotEqualTo(Float value) {
             addCriterion("rate_of_speech <>", value, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechGreaterThan(Integer value) {
+        public Criteria andRateOfSpeechGreaterThan(Float value) {
             addCriterion("rate_of_speech >", value, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRateOfSpeechGreaterThanOrEqualTo(Float value) {
             addCriterion("rate_of_speech >=", value, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechLessThan(Integer value) {
+        public Criteria andRateOfSpeechLessThan(Float value) {
             addCriterion("rate_of_speech <", value, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechLessThanOrEqualTo(Integer value) {
+        public Criteria andRateOfSpeechLessThanOrEqualTo(Float value) {
             addCriterion("rate_of_speech <=", value, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechIn(List<Integer> values) {
+        public Criteria andRateOfSpeechIn(List<Float> values) {
             addCriterion("rate_of_speech in", values, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechNotIn(List<Integer> values) {
+        public Criteria andRateOfSpeechNotIn(List<Float> values) {
             addCriterion("rate_of_speech not in", values, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechBetween(Integer value1, Integer value2) {
+        public Criteria andRateOfSpeechBetween(Float value1, Float value2) {
             addCriterion("rate_of_speech between", value1, value2, "rateOfSpeech");
             return (Criteria) this;
         }
 
-        public Criteria andRateOfSpeechNotBetween(Integer value1, Integer value2) {
+        public Criteria andRateOfSpeechNotBetween(Float value1, Float value2) {
             addCriterion("rate_of_speech not between", value1, value2, "rateOfSpeech");
             return (Criteria) this;
         }

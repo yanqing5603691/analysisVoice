@@ -32,7 +32,7 @@ public class analysisVoiceController {
     @RequestMapping(value = "import",method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity importVoice(MultipartFile fileUpload){
-        String path = "E:\\my_voice\\fileUpload";
+        String path = "D:\\my_voice\\fileUpload";
         try {
             String filename = fileUpload.getOriginalFilename();
             File file = new File(path,filename);
